@@ -5,7 +5,7 @@ import RoomFactory from "./contract/RoomFactory.json";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
-const address = "0xd852ebc533c3Ee64Aa342f764487031fa3121447";
+const address = "0xF24f828A3F077C416Cb7D9A1E92A1055390b37c9";
 const roomFactory = new web3.eth.Contract(RoomFactory.abi, address);
 
 function App() {
