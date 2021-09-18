@@ -1,7 +1,7 @@
 version: '3'
 
 services: 
-  db:
+  mysql:
     image: mysql@sha256:dce31fcdd15aaedb5591aa89f19ec37cb79981af46511781fa41287d88ed0abd
     container_name: quest_db
     ports: 
@@ -11,6 +11,40 @@ services:
       - ./sqls:/docker-entrypoint-db.d
     environment: 
       MYSQL_DATABASE: quest_db
-      MYSQL_ROOT_PASSWORD: MYSQL_ROOT_PASSWORD
+      MYSQL_ROOT_PASSWORD: password
       TZ: "Asia/Tokyo"
     command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
+  api:
+    build: ./api
+    container_name: test_api
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./api:/src
+    environment:
+      - GO111MODULE=on
+    depends_on:
+      - mysql
+    command: sh ./wait.sh mysql go run main.go
+  event:
+    build: event
+    container_name: test_event
+    ports:
+      - "8081:8081"
+    volumes:
+      - ./event:/go/src/app
+    environment:
+      GETH_URL: "ws://localhost:7545"
+      ROOM_FACTORY_ADDRESS: "0xF24f828A3F077C416Cb7D9A1E92A1055390b37c9"
+    depends_on:
+      - mysql
+    command: sh ./wait.sh mysql go run main.go
+  frontend:
+    build: ./frontend
+    container_name: test_frontend
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/usr/app
+      - /usr/app/node_modules
+    command: yarn start

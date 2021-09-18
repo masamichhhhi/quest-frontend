@@ -5,6 +5,7 @@ import (
 	"log"
 	"math/big"
 	"math/rand"
+	"os"
 	"strings"
 	"time"
 
@@ -45,7 +46,7 @@ func main() {
 	db := connectDB()
 	defer db.Close()
 
-	client, err := ethclient.Dial("ws://localhost:8546")
+	client, err := ethclient.Dial(os.Getenv("GETH_URL"))
 	if err != nil {
 		log.Fatalf("err: %v\n", err)
 	}
@@ -55,7 +56,7 @@ func main() {
 	}
 
 	query := ethereum.FilterQuery{
-		Addresses: []common.Address{common.HexToAddress("0xF24f828A3F077C416Cb7D9A1E92A1055390b37c9")},
+		Addresses: []common.Address{common.HexToAddress(os.Getenv("ROOM_FACTORY_ADDRESS"))},
 		Topics: [][]common.Hash{{
 			topics["RoomCreated"],
 		}},
@@ -112,7 +113,7 @@ func connectDB() *gorm.DB {
 	DBMS := "mysql"
 	USER := "root"
 	PASS := "password"
-	PROTOCOL := "tcp(mysql)"
+	PROTOCOL := "tcp(mysql:3306)"
 	DBNAME := "test_db"
 	option := "?charset=utf8&parseTime=True"
 	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + option

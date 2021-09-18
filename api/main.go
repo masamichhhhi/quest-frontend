@@ -72,7 +72,7 @@ func connectDB() *gorm.DB {
 	DBMS := "mysql"
 	USER := "root"
 	PASS := "password"
-	PROTOCOL := "tcp(mysql)"
+	PROTOCOL := "tcp(mysql:3306)"
 	DBNAME := "test_db"
 	option := "?charset=utf8&parseTime=True"
 	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + option
