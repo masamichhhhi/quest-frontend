@@ -4,9 +4,9 @@ set -e
 
 host="$1"
 shift
-chm="$@"
+cmd="$@"
 
-until mysqladmin ping -h -u root -ppassword $host -s; do
+until mysqladmin ping -h $host -u root -ppassword -s; do
   echo 'Waiting for mysql'
   sleep 1
 done

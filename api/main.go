@@ -6,6 +6,8 @@ import (
 	"time"
 
 	"github.com/go-chi/chi"
+	"github.com/go-chi/cors"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	_ "github.com/masamichhhhi/quest-api/docs"
 	resp "github.com/nicklaw5/go-respond"
@@ -45,6 +47,15 @@ func main() {
 
 	router := chi.NewRouter()
 
+	router.Use(cors.Handler(cors.Options{
+		AllowedOrigins:   []string{"https://*", "http://*"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowedHeaders:   []string{"Accept", "Authorization", "Content-Type", "X-CSRF-Token"},
+		ExposedHeaders:   []string{"Link"},
+		AllowCredentials: false,
+		MaxAge:           300, // Maximum value not ignored by any of major browsers
+	}))
+
 	router.Get("/root", func(rw http.ResponseWriter, r *http.Request) {
 		rw.Write([]byte("root"))
 	})
@@ -73,7 +84,7 @@ func connectDB() *gorm.DB {
 	USER := "root"
 	PASS := "password"
 	PROTOCOL := "tcp(mysql:3306)"
-	DBNAME := "test_db"
+	DBNAME := "quest_db"
 	option := "?charset=utf8&parseTime=True"
 	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + option
 

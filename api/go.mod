@@ -4,6 +4,7 @@ go 1.16
 
 require (
 	github.com/go-chi/chi v4.0.2+incompatible
+	github.com/go-chi/cors v1.2.0
 	github.com/go-openapi/jsonreference v0.19.6 // indirect
 	github.com/go-openapi/swag v0.19.15 // indirect
 	github.com/go-sql-driver/mysql v1.6.0 // indirect

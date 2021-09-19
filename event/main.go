@@ -15,6 +15,7 @@ import (
 	"github.com/ethereum/go-ethereum/core/types"
 	"github.com/ethereum/go-ethereum/crypto"
 	"github.com/ethereum/go-ethereum/ethclient"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"github.com/masamichhhhi/quest-event/bindings"
 )
@@ -114,7 +115,7 @@ func connectDB() *gorm.DB {
 	USER := "root"
 	PASS := "password"
 	PROTOCOL := "tcp(mysql:3306)"
-	DBNAME := "test_db"
+	DBNAME := "quest_db"
 	option := "?charset=utf8&parseTime=True"
 	CONNECT := USER + ":" + PASS + "@" + PROTOCOL + "/" + DBNAME + option
 

@@ -7,7 +7,7 @@ import reset from "styled-reset";
 import { ArrowLeft, Plus } from "styled-icons/fa-solid";
 
 // 書き出されたRoomFactoryのアドレス
-const address = "0xF24f828A3F077C416Cb7D9A1E92A1055390b37c9";
+const address = "0xD0D392a5B15c44E7161d67eF709442756388F5Ca";
 const roomFactory = new web3.eth.Contract(RoomFactory.abi, address);
 
 class App extends Component {
@@ -18,25 +18,29 @@ class App extends Component {
       rooms: [],
       isShowModal: false,
     };
+
+    this.handleKeyUP = this.handleKeyUP.bind(this);
   }
 
   async componentDidMount() {
     // Room一覧APIのURL
-    const res = await axios.get("http://api:8080/v1/rooms");
+    const res = await axios.get("http://localhost:8080/rooms");
+    console.log(res);
     this.setState({ rooms: res.data });
   }
 
   handleKeyUP = (e) => {
+    console.log(e.target.value);
     this.setState({ deposit: e.target.value });
   };
 
   handleCreateRoom = async () => {
     const [ethaddress] = await web3.eth.getAccounts();
-
+    console.log(this.state.deposit.toString());
     try {
       roomFactory.methods.createRoom().send({
         from: ethaddress,
-        value: web3.utils.toWei(this.state.deposit.toString(), "ether"),
+        value: web3.utils.toWei("1", "ether"),
       });
     } catch (error) {
       console.log(error);
@@ -101,7 +105,8 @@ class App extends Component {
             <Contents>
               <p>デポジット額（ETH）を入力</p>
               <input
-                onKeyUp={this.handleKeyUp}
+                type="text"
+                onChange={this.handleKeyUp}
                 placeholder="Initial Deposit (ETH)"
               />
             </Contents>

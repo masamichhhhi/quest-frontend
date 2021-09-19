@@ -7,8 +7,8 @@ services:
     ports: 
       - "3307:3306"
     volumes:
-      - ./mysql_data:/var/lib/mysql
-      - ./sqls:/docker-entrypoint-db.d
+      - ./mysql/mysql_data:/var/lib/mysql
+      - ./mysql/sqls:/docker-entrypoint-initdb.d
     environment: 
       MYSQL_DATABASE: quest_db
       MYSQL_ROOT_PASSWORD: password
@@ -26,6 +26,7 @@ services:
     depends_on:
       - mysql
     command: sh ./wait.sh mysql go run main.go
+    stdin_open: true
   event:
     build: event
     container_name: test_event
@@ -34,17 +35,18 @@ services:
     volumes:
       - ./event:/go/src/app
     environment:
-      GETH_URL: "ws://localhost:7545"
-      ROOM_FACTORY_ADDRESS: "0xF24f828A3F077C416Cb7D9A1E92A1055390b37c9"
+      GETH_URL: "ws://host.docker.internal:7545"
+      ROOM_FACTORY_ADDRESS: "0xD0D392a5B15c44E7161d67eF709442756388F5Ca"
     depends_on:
       - mysql
     command: sh ./wait.sh mysql go run main.go
-  frontend:
-    build: ./frontend
-    container_name: test_frontend
-    ports:
-      - "3000:3000"
-    volumes:
-      - ./frontend:/usr/app
-      - /usr/app/node_modules
-    command: yarn start
+    stdin_open: true
+  # frontend:
+  #   build: ./frontend
+  #   container_name: test_frontend
+  #   ports:
+  #     - "3000:3000"
+  #   volumes:
+  #     - ./frontend:/usr/app
+  #     - /usr/app/node_modules
+  #   command: yarn start
