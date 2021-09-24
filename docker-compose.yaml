@@ -35,8 +35,8 @@ services:
     volumes:
       - ./event:/go/src/app
     environment:
-      GETH_URL: "ws://host.docker.internal:7545"
-      ROOM_FACTORY_ADDRESS: "0xD0D392a5B15c44E7161d67eF709442756388F5Ca"
+      GETH_URL: "ws://host.docker.internal:8545"
+      ROOM_FACTORY_ADDRESS: "0xB15FE0CED91C3cCf8D1C276C61c60B94ECa7b932"
     depends_on:
       - mysql
     command: sh ./wait.sh mysql go run main.go

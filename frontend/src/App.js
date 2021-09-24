@@ -7,7 +7,7 @@ import reset from "styled-reset";
 import { ArrowLeft, Plus } from "styled-icons/fa-solid";
 
 // 書き出されたRoomFactoryのアドレス
-const address = "0xD0D392a5B15c44E7161d67eF709442756388F5Ca";
+const address = "0xB15FE0CED91C3cCf8D1C276C61c60B94ECa7b932";
 const roomFactory = new web3.eth.Contract(RoomFactory.abi, address);
 
 class App extends Component {
